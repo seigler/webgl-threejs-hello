@@ -2,14 +2,20 @@ export default class Webgl {
   constructor(w, h) {
     this.scene = new THREE.Scene();
 
-    this.camera = new THREE.PerspectiveCamera(50, w / h, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
     this.camera.position.z = 10;
 
     this._renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: false,
     });
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.setClearColor(0x0c171a);
+    this._renderer.gammaInput = true;
+    this._renderer.gammaOutput = true;
+    this._renderer.shadowMap.enabled = true;
+    this._renderer.shadowMap.bias = 0.0001;
+    this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.dom = this._renderer.domElement;
 
     this.usePostprocessing = false;

@@ -1,8 +1,8 @@
 import Webgl from 'js/core/Webgl';
 import loop from 'js/core/Loop';
 import props from 'js/core/props';
-import Example from 'js/components/Example';
-
+import Eyeball from 'js/components/Eyeball';
+import { createLight, createHemisphereLight } from 'js/components/Light';
 
 // ##
 // INIT
@@ -19,15 +19,14 @@ gui.close();
 
 // ##
 // EXAMPLE LIGHT
-const light = new THREE.DirectionalLight(0xffffff, 0.5);
-light.position.set(1, 1, 1);
-webgl.add(light);
+webgl.add(createLight());
+webgl.add(createHemisphereLight());
 
 // ##
 // EXAMPLE BOX
-const example = new Example();
-webgl.add(example);
-loop.add(example.onUpdate);
+const eyeball = new Eyeball();
+webgl.add(eyeball);
+loop.add(eyeball.onUpdate);
 
 // ##
 // RENDERER

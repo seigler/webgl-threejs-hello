@@ -9,5 +9,5 @@ exports.config =
       joinTo: 'app.js'
   npm:
     globals:
-      THREE: 'three'
+      THREE: 'three-full'
       dat: 'dat-gui'

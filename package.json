@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "dat-gui": "^0.5.0",
-    "three": "^0.81.0"
+    "three-full": "^11.3.2"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.7.1",
