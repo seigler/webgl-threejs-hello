@@ -1,3 +1,5 @@
+// import PCSS from '../shaders/PCSS-frag';
+
 export default class Webgl {
   constructor(w, h) {
     this.scene = new THREE.Scene();
@@ -8,16 +10,31 @@ export default class Webgl {
     this.camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
     this.camera.position.z = 10;
 
+    // // overwrite shadowmap code
+    // let shader = THREE.ShaderChunk.shadowmap_pars_fragment;
+    // shader = shader.replace(
+    //   '#ifdef USE_SHADOWMAP',
+    //   '#ifdef USE_SHADOWMAP\n' + PCSS
+    // );
+    // shader = shader.replace(
+    //   '#if defined( SHADOWMAP_TYPE_PCF )',
+    //   `
+    //   return PCSS( shadowMap, shadowCoord );
+
+    //   #if defined( SHADOWMAP_TYPE_PCF )`
+    // );
+    // THREE.ShaderChunk.shadowmap_pars_fragment = shader;
+
     this._renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: false,
     });
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.gammaInput = true;
     this._renderer.gammaOutput = true;
+
     this._renderer.shadowMap.enabled = true;
-    this._renderer.shadowMap.bias = -0.0001;
-    this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this._renderer.shadowMap.type = THREE.BasicShadowMap;
+
     this.dom = this._renderer.domElement;
 
     this.usePostprocessing = true;
