@@ -1,6 +1,9 @@
 export default class Webgl {
   constructor(w, h) {
     this.scene = new THREE.Scene();
+    let fogColor = new THREE.Color().setHSL( 0.6, 1, 0.6 );
+    this.scene.background = fogColor;
+    this.scene.fog = new THREE.Fog(fogColor, 0.0025, 100);
 
     this.camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
     this.camera.position.z = 10;
@@ -10,7 +13,6 @@ export default class Webgl {
       alpha: false,
     });
     this._renderer.setPixelRatio(window.devicePixelRatio);
-    this._renderer.setClearColor(0x0c171a);
     this._renderer.gammaInput = true;
     this._renderer.gammaOutput = true;
     this._renderer.shadowMap.enabled = true;
@@ -21,7 +23,7 @@ export default class Webgl {
     this.usePostprocessing = true;
     this._passes = [
       new THREE.RenderPass(this.scene, this.camera),
-      // new THREE.SMAAPass(),
+      new THREE.HalftonePass(),
     ];
     this.initPostprocessing();
     this.onResize(w, h);
@@ -34,8 +36,8 @@ export default class Webgl {
     this._controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
     this._controls.dampingFactor = 0.25;
     this._controls.screenSpacePanning = false;
-    this._controls.minDistance = 10;
-    this._controls.maxDistance = 200;
+    this._controls.minDistance = 3;
+    this._controls.maxDistance = 50;
     this._controls.maxPolarAngle = Math.PI / 2;
   }
 

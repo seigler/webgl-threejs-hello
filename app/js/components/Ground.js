@@ -5,7 +5,7 @@ class Ground extends THREE.Object3D {
     super();
 
     const material = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x050505 });
-    material.color.setHSL(0.095, 1, 0.75);
+    material.color.setHSL(0.095, 0.4, 0.5);
     const geometry = new THREE.PlaneBufferGeometry(10000, 10000);
     let mesh = new THREE.Mesh(geometry, material);
 
