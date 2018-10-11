@@ -40,8 +40,8 @@ class Eyeball extends THREE.Object3D {
   }
 
   onUpdate() {
-    this.rotation.x += props.rotation;
-    this.rotation.y += props.rotation;
+    // this.rotation.x += props.rotation;
+    // this.rotation.y += props.rotation;
   }
 }
 

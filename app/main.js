@@ -1,7 +1,9 @@
 import Webgl from 'js/core/Webgl';
 import loop from 'js/core/Loop';
 import props from 'js/core/props';
-import Eyeball from 'js/components/Eyeball';
+import Bean from 'js/components/Bean';
+import Ground from 'js/components/Ground';
+import Light from 'js/components/Light';
 import { createLight, createHemisphereLight } from 'js/components/Light';
 
 // ##
@@ -17,16 +19,17 @@ const gui = new dat.GUI();
 gui.add(props, 'rotation', 0.01, 1);
 gui.close();
 
-// ##
-// EXAMPLE LIGHT
-webgl.add(createLight());
-webgl.add(createHemisphereLight());
+webgl.add(new Ground());
+
+const light = new Light();
+webgl.add(light);
+loop.add(light.onUpdate);
 
 // ##
 // EXAMPLE BOX
-const eyeball = new Eyeball();
-webgl.add(eyeball);
-loop.add(eyeball.onUpdate);
+const bean = new Bean();
+webgl.add(bean);
+loop.add(bean.onUpdate);
 
 // ##
 // RENDERER

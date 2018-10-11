@@ -1,26 +1,39 @@
-export function createLight() {
+class Lighting extends THREE.Object3D {
+  constructor() {
+    super();
 
-  var lightGeometry = new THREE.SphereGeometry(0.1);
+    let dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    dirLight.color.setHSL( 0.1, 1, 0.95 );
+    dirLight.position.set( -1, 1.75, 1 );
+    dirLight.position.multiplyScalar( 2 );
 
-  var lightMaterial = new THREE.MeshStandardMaterial({
-      emissive: 0xffffee,
-      emissiveIntensity: 1,
-      color: 0x000000
-  });
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.heigth = 1024;
+    dirLight.shadow.radius = 3;
 
-  var light = new THREE.PointLight(0xffffff, 1, 20, 2);
-  light.power = 50;
-  light.castShadow = true;
-  light.shadow.mapSize.width = 512;
-  light.shadow.mapSize.heigth = 512;
-  light.shadow.radius = 1.5;
+    let d = 10;
+    dirLight.shadow.camera.left = -d;
+    dirLight.shadow.camera.right = d;
+    dirLight.shadow.camera.top = d;
+    dirLight.shadow.camera.bottom = -d;
+    dirLight.shadow.camera.far = 3500;
 
-  light.add(new THREE.Mesh(lightGeometry, lightMaterial));
-  light.position.set(0, 5, 3);
+    this.add(dirLight);
+    this.add(new THREE.DirectionalLightHelper( dirLight, 1 ));
 
-  return light;
+    let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+    hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+    hemiLight.position.set( 0, 4, 0 );
+    this.add( hemiLight );
+    this.add( new THREE.HemisphereLightHelper( hemiLight, 1 ) );
+
+    this.onUpdate = this.onUpdate.bind(this);
+  }
+
+  onUpdate() {
+  }
 }
 
-export function createHemisphereLight() {
-  return new THREE.HemisphereLight(0x303F9F, 0x111111, 3);
-}
+module.exports = Lighting;

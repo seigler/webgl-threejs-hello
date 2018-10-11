@@ -14,27 +14,42 @@ export default class Webgl {
     this._renderer.gammaInput = true;
     this._renderer.gammaOutput = true;
     this._renderer.shadowMap.enabled = true;
-    this._renderer.shadowMap.bias = 0.0001;
+    this._renderer.shadowMap.bias = -0.0001;
     this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.dom = this._renderer.domElement;
 
-    this.usePostprocessing = false;
-    this._composer = false;
-    this._passes = {};
+    this.usePostprocessing = true;
+    this._passes = [
+      new THREE.RenderPass(this.scene, this.camera),
+      // new THREE.SMAAPass(),
+    ];
     this.initPostprocessing();
     this.onResize(w, h);
 
     this.onUpdate = this.onUpdate.bind(this);
     this.onResize = this.onResize.bind(this);
+
+    this._controls = new THREE.OrbitControls(this.camera, this._renderer.domElement);
+    //this._controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+    this._controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    this._controls.dampingFactor = 0.25;
+    this._controls.screenSpacePanning = false;
+    this._controls.minDistance = 10;
+    this._controls.maxDistance = 200;
+    this._controls.maxPolarAngle = Math.PI / 2;
   }
 
   initPostprocessing() {
     if (!this.usePostprocessing) return;
-    // TODO add WAGNER
-    this._composer = new WAGNER.Composer(this._renderer);
-    this._composer.setSize(this.width, this.height);
-    this._passes.vignettePass = new WAGNER.VignettePass();
-    this._passes.fxaaPass = new WAGNER.FXAAPass();
+    this._composer = new THREE.EffectComposer(this._renderer);
+    let ssaoShader = THREE.SSAOShader;
+    ssaoShader.uniforms.onlyAO = true;
+    this._passes.forEach((effect, i) => {
+      if (i == this._passes.length - 1) {
+        effect.renderToScreen = true;
+      }
+      this._composer.addPass(effect);
+    });
   }
 
   add(mesh) {
@@ -42,14 +57,9 @@ export default class Webgl {
   }
 
   onUpdate() {
+    this._controls.update();
     if (this.usePostprocessing) {
-      this._composer.reset();
-      this._composer.renderer.clear();
       this._composer.render(this.scene, this.camera);
-      // TODO loop to passes
-      this._composer.pass(this._passes.fxaaPass);
-      this._composer.pass(this._passes.vignettePass);
-      this._composer.toScreen();
     } else {
       this._renderer.render(this.scene, this.camera);
     }
@@ -63,5 +73,8 @@ export default class Webgl {
     this.camera.updateProjectionMatrix();
 
     this._renderer.setSize(w, h);
+    if (this.usePostprocessing) {
+      this._composer.setSize(w, h);
+    }
   }
 }
