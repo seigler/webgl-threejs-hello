@@ -3,8 +3,8 @@ import loop from 'js/core/Loop';
 import props from 'js/core/props';
 import Bean from 'js/components/Bean';
 import Ground from 'js/components/Ground';
+import Clouds from 'js/components/Clouds';
 import Light from 'js/components/Light';
-import { createLight, createHemisphereLight } from 'js/components/Light';
 
 // ##
 // INIT
@@ -20,6 +20,10 @@ gui.add(props, 'rotation', 0.01, 1);
 gui.close();
 
 webgl.add(new Ground());
+
+const clouds = new Clouds();
+webgl.add(clouds);
+loop.add(clouds.onUpdate);
 
 const light = new Light();
 webgl.add(light);

@@ -10,30 +10,15 @@ export default class Webgl {
     this.camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
     this.camera.position.z = 10;
 
-    // // overwrite shadowmap code
-    // let shader = THREE.ShaderChunk.shadowmap_pars_fragment;
-    // shader = shader.replace(
-    //   '#ifdef USE_SHADOWMAP',
-    //   '#ifdef USE_SHADOWMAP\n' + PCSS
-    // );
-    // shader = shader.replace(
-    //   '#if defined( SHADOWMAP_TYPE_PCF )',
-    //   `
-    //   return PCSS( shadowMap, shadowCoord );
-
-    //   #if defined( SHADOWMAP_TYPE_PCF )`
-    // );
-    // THREE.ShaderChunk.shadowmap_pars_fragment = shader;
-
     this._renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
-    this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.gammaInput = true;
     this._renderer.gammaOutput = true;
 
     this._renderer.shadowMap.enabled = true;
-    this._renderer.shadowMap.type = THREE.BasicShadowMap;
+    // this._renderer.shadowMap.type = THREE.BasicShadowMap;
+    this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     this.dom = this._renderer.domElement;
 
@@ -91,9 +76,12 @@ export default class Webgl {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
 
-    this._renderer.setSize(w, h);
     if (this.usePostprocessing) {
-      this._composer.setSize(w, h);
+      this._renderer.setSize(w, h);
+      this._renderer.setPixelRatio(window.devicePixelRatio / 2);
+      this._composer.setSize(w/2, h/2);
+    } else {
+      this._renderer.setSize(w, h);
     }
   }
 }

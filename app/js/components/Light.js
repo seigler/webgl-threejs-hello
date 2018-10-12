@@ -7,14 +7,14 @@ class Lighting extends THREE.Object3D {
     let dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
     dirLight.color.setHSL( 0.095, 1, 0.95 );
     dirLight.position.set( -1, 1.75, 1 );
-    dirLight.position.multiplyScalar( 2 );
+    dirLight.position.multiplyScalar( 20 );
 
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 1024;
     dirLight.shadow.mapSize.height = 1024;
-    dirLight.shadow.radius = 3;
+    dirLight.shadow.radius = 2;
 
-    let d = 10;
+    let d = 100;
     dirLight.shadow.camera.left = -d;
     dirLight.shadow.camera.right = d;
     dirLight.shadow.camera.top = d;

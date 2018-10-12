@@ -3,6 +3,7 @@ class Loop {
   constructor() {
     this._idRAF = -1;
     this._count = 0;
+    this._time = (new Date()).getTime();
 
     this._listeners = [];
 
@@ -13,10 +14,11 @@ class Loop {
   _update() {
     let listener = null;
     let i = this._count;
+    this._time = (new Date()).getTime()
     while (--i >= 0) {
       listener = this._listeners[i];
       if (listener) {
-        listener.apply(this, null);
+        listener.apply(this, [this._time]);
       }
     }
     this._idRAF = requestAnimationFrame(this._binds.update);

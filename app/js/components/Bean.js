@@ -12,6 +12,7 @@ class Bean extends THREE.Object3D {
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
 
     this.add(this.mesh);
     this.position.z += this.radius / 2 + 0.01;
@@ -19,9 +20,10 @@ class Bean extends THREE.Object3D {
     this.onUpdate = this.onUpdate.bind(this);
   }
 
-  onUpdate() {
-    // this.rotation.x += props.rotation;
-    // this.rotation.y += props.rotation;
+  onUpdate(time) {
+    this.position.y = 0.01 * Math.sin(Math.PI * 2 * time / 20) + 0.01 * Math.sin(Math.PI * 2 * time / 70);
+    this.position.x = 0.1 * Math.sin(Math.PI * 2 * time / 5300);
+    this.position.z = 0.1 * Math.cos(Math.PI * 2 * time / 5300);
   }
 }
 
