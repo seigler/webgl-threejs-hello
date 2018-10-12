@@ -1,5 +1,5 @@
 const props = {
-  rotation: 0.01,
+  cloudSpeed: 0.5,
 };
 
 module.exports = props;

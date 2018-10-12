@@ -16,7 +16,7 @@ loop.add(webgl.onUpdate);
 // ##
 // GUI
 const gui = new dat.GUI();
-gui.add(props, 'rotation', 0.01, 1);
+gui.add(props, 'cloudSpeed', -1, 1);
 gui.close();
 
 webgl.add(new Ground());

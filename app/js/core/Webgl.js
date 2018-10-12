@@ -46,8 +46,6 @@ export default class Webgl {
   initPostprocessing() {
     if (!this.usePostprocessing) return;
     this._composer = new THREE.EffectComposer(this._renderer);
-    let ssaoShader = THREE.SSAOShader;
-    ssaoShader.uniforms.onlyAO = true;
     this._passes.forEach((effect, i) => {
       if (i == this._passes.length - 1) {
         effect.renderToScreen = true;

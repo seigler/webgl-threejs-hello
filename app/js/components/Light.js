@@ -10,8 +10,8 @@ class Lighting extends THREE.Object3D {
     dirLight.position.multiplyScalar( 20 );
 
     dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
     dirLight.shadow.radius = 2;
 
     let d = 100;
